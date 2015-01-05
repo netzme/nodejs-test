@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-test",
+  "version": "0.0.1",
+  "author": {
+    "name": "NETZME"
+  },
+  "contributors": [
+    {
+      "name": "Untung Ginardi",
+      "email": "untung@netzme.id"
+    }
+  ],
+  "dependencies": {
+    "expect.js": "0.3.x",
+    "mqtt": "0.3.x"
+  }
+}
