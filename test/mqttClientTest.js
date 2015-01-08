@@ -9,42 +9,43 @@ describe("MQTT Server Test", function(){
     var publisher = null,
         subscriber = null,
         server = null,
-        topic = "topic";
+        topic = "/topic";
 
     before(function(){
         server = require("../server");
-        publisher = mqtt.createClient(1883);
-        publisher.publish("/" + topic, "test publish");
         subscriber = mqtt.createClient(1883);
-        subscriber.subscribe("/" + topic);
+        subscriber.subscribe(topic);
     });
 
-    describe("when subscriber receive a message from client", function(){
+    beforeEach(function(){
+        publisher = mqtt.createClient(1883);
+        publisher.publish(topic, "test publish", {retain: true});
+    });
 
+
+    describe("when publisher publish a message with topic '"+ topic + "'", function(){
         it("subscriber should receive a message", function(done){
             subscriber.on('message', function(top, msg){
                 expect(top).not.to.be(null);
                 expect(msg).not.to.be(null);
-                done();
             });
-        });
-
-        it("subscriber should have a valid subscriptions", function(done){
-            expect(subscriber.subscriptions.length).not.to.equal(0);
             done();
         });
 
-        it("subcriber payload/message should have 'timestamp' property", function(done){
+        it("subscriber payload/message should have 'timestamp' property", function(done){
             subscriber.on('message', function(top, msg){
                 expect(JSON.parse(msg)).to.have.property('timestamp');
-                done();
             });
+            done();
         });
     });
 
 
-    after(function(){
+    afterEach(function(){
         publisher.end();
+    });
+
+    after(function(){
         subscriber.end();
     });
 });
