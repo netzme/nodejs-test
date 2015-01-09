@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "expect.js": "0.3.x",
-    "mqtt": "0.3.x"
+    "mqtt": "0.3.x",
+    "mosca": "0.26.x"
   }
 }

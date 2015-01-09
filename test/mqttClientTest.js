@@ -6,46 +6,46 @@ var expect = require("expect.js"),
 
 describe("MQTT Server Test", function(){
 
-    var publisher = null,
-        subscriber = null,
-        server = null,
-        topic = "/topic";
-
-    before(function(){
-        server = require("../server");
-        subscriber = mqtt.createClient(1883);
-        subscriber.subscribe(topic);
-    });
-
-    beforeEach(function(){
-        publisher = mqtt.createClient(1883);
-        publisher.publish(topic, "test publish", {retain: true});
-    });
-
+    var topic = "/topic";
 
     describe("when publisher publish a message with topic '"+ topic + "'", function(){
+        var publisher = null,
+            subscriber = null,
+            subscriber2 = null,
+            server = null;
+
+        before(function(){
+            server = require("../server");
+            subscriber = mqtt.createClient(1883);
+            subscriber.subscribe(topic);
+            subscriber2 = mqtt.createClient(1883);
+            subscriber2.subscribe(topic);
+        });
+
+        beforeEach(function(){
+            publisher = mqtt.createClient(1883);
+            publisher.publish(topic, "test publish", {retain: true});
+        });
+
         it("subscriber should receive a message", function(done){
             subscriber.on('message', function(top, msg){
                 expect(top).not.to.be(null);
                 expect(msg).not.to.be(null);
+                subscriber.end();
+                done();
             });
-            done();
         });
 
         it("subscriber payload/message should have 'timestamp' property", function(done){
-            subscriber.on('message', function(top, msg){
+            subscriber2.on('message', function(top, msg){
                 expect(JSON.parse(msg)).to.have.property('timestamp');
+                subscriber2.end();
+                done();
             });
-            done();
         });
-    });
 
-
-    afterEach(function(){
-        publisher.end();
-    });
-
-    after(function(){
-        subscriber.end();
+        afterEach(function(){
+            publisher.end();
+        });
     });
 });
