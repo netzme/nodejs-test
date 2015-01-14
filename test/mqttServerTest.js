@@ -1,10 +1,11 @@
 /**
- * Created by untung on 1/9/15.
+ * Created by untung on 1/5/15.
  */
 var expect = require("expect.js"),
     mqtt =  require("mqtt");
 
-describe("Mosca Server test", function(){
+describe("MQTT Server Test", function(){
+
     var topic = "/topic",
         newTopic = topic + "_new";
 
@@ -17,19 +18,16 @@ describe("Mosca Server test", function(){
             server = null,
             testMessage = {message: "test publish"};
 
-        before(function(done){
-            server = require("../mosca");
-            server.modules.on('ready', function(){
-                subscriber = mqtt.createClient(1885);
-                subscriber.subscribe(topic);
-                subscriber2 = mqtt.createClient(1885);
-                subscriber2.subscribe(newTopic);
-                subscriber3 = mqtt.createClient(1885);
-                subscriber3.subscribe(newTopic);
-                subscriber4 = mqtt.createClient(1885);
-                subscriber4.subscribe(topic);
-                done();
-            });
+        before(function(){
+            server = require("../server");
+            subscriber = mqtt.createClient(1883);
+            subscriber.subscribe(topic);
+            subscriber2 = mqtt.createClient(1883);
+            subscriber2.subscribe(newTopic);
+            subscriber3 = mqtt.createClient(1883);
+            subscriber3.subscribe(newTopic);
+            subscriber4 = mqtt.createClient(1883);
+            subscriber4.subscribe(topic);
         });
 
         after(function(done){
@@ -39,8 +37,8 @@ describe("Mosca Server test", function(){
         });
 
         beforeEach(function(){
-            publisher = mqtt.createClient(1885);
-            publisher.publish(topic, JSON.stringify(testMessage));
+            publisher = mqtt.createClient(1883);
+            publisher.publish(topic, JSON.stringify(testMessage), {retain: true});
         });
 
         afterEach(function(){
@@ -72,7 +70,7 @@ describe("Mosca Server test", function(){
             });
         });
 
-        it("message/payload subscriber topic '" + newTopic + "' should have 'timestamp' property", function(done){
+        it("subscriber payload/message should have 'timestamp' property", function(done){
             subscriber3.on('message', function(top, msg){
                 expect(JSON.parse(msg)).to.have.property('timestamp');
                 subscriber3.end();
