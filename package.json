@@ -14,5 +14,10 @@
     "expect.js": "0.3.x",
     "mqtt": "0.3.x",
     "mosca": "0.26.x"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-uglify": "^0.7.0"
   }
 }
