@@ -19,7 +19,7 @@ describe("MQTT Server Test", function(){
             testMessage = {message: "test publish"};
 
         before(function(){
-            server = require("../server");
+            server = require("../src/server");
             subscriber = mqtt.createClient(1883);
             subscriber.subscribe(topic);
             subscriber2 = mqtt.createClient(1883);

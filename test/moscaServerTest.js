@@ -18,7 +18,7 @@ describe("Mosca Server test", function(){
             testMessage = {message: "test publish"};
 
         before(function(done){
-            server = require("../mosca");
+            server = require("../src/mosca");
             server.modules.on('ready', function(){
                 subscriber = mqtt.createClient(1885);
                 subscriber.subscribe(topic);

@@ -11,11 +11,11 @@ module.exports = function(grunt){
             build: {
                 files: [
                     {
-                        src: ['server.js', '!Gruntfile.js'],
+                        src: ['src/server.js', '!Gruntfile.js'],
                         dest: 'build/server.min.js'
                     },
                     {
-                        src: ['mosca.js', '!Gruntfile.js'],
+                        src: ['src/mosca.js', '!Gruntfile.js'],
                         dest: 'build/mosca.min.js'
                     }
                 ]
