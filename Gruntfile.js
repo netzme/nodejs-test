@@ -23,10 +23,16 @@ module.exports = function(grunt){
         },
         clean: {
             build: ['build/*.js']
+        },
+        mochaTest: {
+            test: {
+                src: ['test/**/*Test.js']
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.registerTask('default', ['uglify']);
+    grunt.loadNpmTasks('grunt-mocha-test')
+    grunt.registerTask('default', ['clean', 'uglify', 'mochaTest']);
 }
